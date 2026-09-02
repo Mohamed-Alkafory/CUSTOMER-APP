@@ -1,0 +1,152 @@
+<div class="page-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-text">
+      <h1 class="page-title">Customers</h1>
+      <p class="page-subtitle">Manage your customers efficiently</p>
+    </div>
+    <a routerLink="/create" class="btn-primary" id="btn-create-customer">
+      <mat-icon>person_add</mat-icon>
+      Create Customer
+    </a>
+  </div>
+
+  <!-- Toolbar: Search + Count -->
+  <div class="toolbar">
+    <div class="search-box">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        id="customer-search"
+        type="text"
+        class="search-input"
+        placeholder="Search by name, email or phone…"
+        [(ngModel)]="searchTerm"
+      />
+      <button *ngIf="searchTerm" class="clear-btn" (click)="searchTerm = ''" aria-label="Clear search">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="customer-count">
+      <span class="count-badge">{{ filteredCustomers.length }}</span>
+      <span class="count-label">
+        {{ filteredCustomers.length === 1 ? 'Customer' : 'Customers' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div *ngIf="isLoading" class="skeleton-container" aria-label="Loading customers…">
+    <div class="skeleton-row" *ngFor="let n of [1, 2, 3, 4, 5]">
+      <div class="sk sk-avatar"></div>
+      <div class="sk-info">
+        <div class="sk sk-line w-40"></div>
+        <div class="sk sk-line w-60"></div>
+      </div>
+      <div class="sk sk-line w-20 sk-end"></div>
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div *ngIf="!isLoading" class="table-card">
+
+    <!-- Empty State -->
+    <div *ngIf="filteredCustomers.length === 0" class="empty-state">
+      <div class="empty-icon-wrap">
+        <mat-icon>{{ searchTerm ? 'search_off' : 'group_off' }}</mat-icon>
+      </div>
+      <h3 class="empty-title">{{ searchTerm ? 'No results found' : 'No customers yet' }}</h3>
+      <p class="empty-desc">
+        {{ searchTerm ? 'Try adjusting your search term.' : 'Get started by adding your first customer.' }}
+      </p>
+      <a *ngIf="!searchTerm" routerLink="/create" class="btn-primary" id="btn-empty-create">
+        <mat-icon>person_add</mat-icon>
+        Create Customer
+      </a>
+      <button *ngIf="searchTerm" class="btn-ghost" (click)="searchTerm = ''">Clear Search</button>
+    </div>
+
+    <!-- Data Table -->
+    <div *ngIf="filteredCustomers.length > 0" class="table-wrapper">
+      <table class="customers-table" aria-label="Customers list">
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th class="col-customer">Customer</th>
+            <th class="col-email">Email</th>
+            <th class="col-phone">Phone</th>
+            <th class="col-date">Date</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let customer of filteredCustomers; let i = index"
+            class="table-row"
+          >
+            <!-- # -->
+            <td class="col-num">
+              <span class="row-num">{{ i + 1 }}</span>
+            </td>
+
+            <!-- Customer -->
+            <td class="col-customer">
+              <div class="customer-cell">
+                <div class="avatar" [style.background]="getAvatarColor(customer.name)">
+                  {{ getInitial(customer.name) }}
+                </div>
+                <span class="customer-name">{{ customer.name }}</span>
+              </div>
+            </td>
+
+            <!-- Email -->
+            <td class="col-email">
+              <span class="cell-text">{{ customer.email }}</span>
+            </td>
+
+            <!-- Phone -->
+            <td class="col-phone">
+              <span class="cell-text">{{ customer.phone }}</span>
+            </td>
+
+            <!-- Date -->
+            <td class="col-date">
+              <span class="cell-text">{{ customer.date | date: 'mediumDate' }}</span>
+            </td>
+
+            <!-- Actions -->
+            <td class="col-actions">
+              <div class="action-buttons">
+                <button
+                  class="action-btn action-view"
+                  [routerLink]="['/details', customer._id]"
+                  title="View Details"
+                  [attr.aria-label]="'View ' + customer.name"
+                >
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button
+                  class="action-btn action-edit"
+                  [routerLink]="['/edit', customer._id]"
+                  title="Edit Customer"
+                  [attr.aria-label]="'Edit ' + customer.name"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  class="action-btn action-delete"
+                  (click)="onDeleteClick(customer)"
+                  title="Delete Customer"
+                  [attr.aria-label]="'Delete ' + customer.name"
+                >
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

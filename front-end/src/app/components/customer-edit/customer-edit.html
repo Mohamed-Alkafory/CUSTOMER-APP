@@ -1,0 +1,104 @@
+<div class="page-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-text">
+      <h1 class="page-title">Edit Customer</h1>
+      <p class="page-subtitle">Update the customer's information</p>
+    </div>
+    <a routerLink="/" class="btn-back" id="btn-back-to-list">
+      <mat-icon>arrow_back</mat-icon>
+      Back to List
+    </a>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div *ngIf="isLoading" class="form-card">
+    <div class="form-grid">
+      <div class="form-group" *ngFor="let n of [1, 2, 3]">
+        <div class="sk sk-label"></div>
+        <div class="sk sk-input"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div *ngIf="!isLoading" class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-grid">
+
+        <!-- Name -->
+        <div class="form-group">
+          <label class="form-label" for="name">
+            <mat-icon class="label-icon">person</mat-icon>
+            Full Name
+          </label>
+          <input
+            id="name"
+            type="text"
+            class="form-control"
+            [class.is-invalid]="form.get('name')?.invalid && form.get('name')?.touched"
+            formControlName="name"
+            placeholder="e.g. Mohamed Hamed"
+            autocomplete="name"
+          />
+          <div class="form-error" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+            Full name is required
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label" for="email">
+            <mat-icon class="label-icon">email</mat-icon>
+            Email Address
+          </label>
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
+            formControlName="email"
+            placeholder="e.g. name@example.com"
+            autocomplete="email"
+          />
+          <div class="form-error" *ngIf="form.get('email')?.touched">
+            <span *ngIf="form.get('email')?.hasError('required')">Email address is required</span>
+            <span *ngIf="form.get('email')?.hasError('email')">Please enter a valid email address</span>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-group">
+          <label class="form-label" for="phone">
+            <mat-icon class="label-icon">phone</mat-icon>
+            Phone Number
+          </label>
+          <input
+            id="phone"
+            type="tel"
+            class="form-control"
+            [class.is-invalid]="form.get('phone')?.invalid && form.get('phone')?.touched"
+            formControlName="phone"
+            placeholder="e.g. 01022579745"
+            autocomplete="tel"
+          />
+          <div class="form-error" *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+            Phone number is required
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <a routerLink="/" class="btn-cancel" id="btn-cancel-edit">Cancel</a>
+        <button type="submit" class="btn-submit" [disabled]="form.invalid" id="btn-submit-edit">
+          <mat-icon>save</mat-icon>
+          Update Customer
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>

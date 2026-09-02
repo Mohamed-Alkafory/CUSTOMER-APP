@@ -1,0 +1,79 @@
+<div class="app-shell" [class.no-sidebar]="!showSidebar()">
+  <!-- Mobile overlay -->
+  <div
+    *ngIf="showSidebar()"
+    class="sidebar-overlay"
+    [class.visible]="sidebarOpen"
+    (click)="closeSidebar()"
+  ></div>
+
+  <!-- Sidebar -->
+  <aside *ngIf="showSidebar()" class="sidebar" [class.open]="sidebarOpen">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <mat-icon>people</mat-icon>
+      </div>
+      <span class="brand-name">CRM Pro</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Main Menu</span>
+
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item"
+        (click)="closeSidebar()"
+        id="nav-customers"
+      >
+        <mat-icon class="nav-icon">group</mat-icon>
+        <span>Customers</span>
+      </a>
+
+      <a
+        routerLink="/create"
+        routerLinkActive="active"
+        class="nav-item"
+        (click)="closeSidebar()"
+        id="nav-add-customer"
+      >
+        <mat-icon class="nav-icon">person_add</mat-icon>
+        <span>Add Customer</span>
+      </a>
+
+      <a href="#" class="nav-item" id="nav-about">
+        <mat-icon class="nav-icon">info_outline</mat-icon>
+        <span>About</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-divider"></div>
+      <button class="nav-item nav-logout" id="nav-logout">
+        <mat-icon class="nav-icon">logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main content area -->
+  <div class="main-wrapper">
+    <!-- Mobile top bar (only rendered when sidebar is active) -->
+    <header *ngIf="showSidebar()" class="topbar">
+      <button
+        class="hamburger-btn"
+        (click)="toggleSidebar()"
+        aria-label="Toggle sidebar"
+        id="hamburger-btn"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="topbar-brand">CRM Pro</span>
+    </header>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

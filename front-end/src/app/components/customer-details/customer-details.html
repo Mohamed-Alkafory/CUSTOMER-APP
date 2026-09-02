@@ -1,0 +1,97 @@
+<div class="page-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-text">
+      <h1 class="page-title">Customer Details</h1>
+      <p class="page-subtitle">View full customer profile</p>
+    </div>
+    <a routerLink="/" class="btn-back" id="btn-back-to-list">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Customers
+    </a>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div *ngIf="isLoading" class="profile-card">
+    <div class="profile-header sk-header">
+      <div class="sk sk-avatar-lg"></div>
+      <div class="sk-header-info">
+        <div class="sk sk-line w-50"></div>
+        <div class="sk sk-line w-30"></div>
+      </div>
+    </div>
+    <div class="sk-divider"></div>
+    <div class="sk-details">
+      <div class="sk-detail-row" *ngFor="let n of [1, 2, 3]">
+        <div class="sk sk-icon-box"></div>
+        <div class="sk-detail-text">
+          <div class="sk sk-line w-25"></div>
+          <div class="sk sk-line w-50"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Card -->
+  <div *ngIf="!isLoading && customer" class="profile-card">
+
+    <!-- Header: Avatar + Name -->
+    <div class="profile-header">
+      <div class="profile-avatar" [style.background]="getAvatarColor(customer.name)">
+        {{ getInitial(customer.name) }}
+      </div>
+      <div class="profile-header-info">
+        <h2 class="profile-name">{{ customer.name }}</h2>
+        <span class="profile-tag">Customer</span>
+      </div>
+    </div>
+
+    <div class="profile-divider"></div>
+
+    <!-- Detail Rows -->
+    <div class="profile-details">
+
+      <div class="detail-item">
+        <div class="detail-icon detail-icon--blue">
+          <mat-icon>email</mat-icon>
+        </div>
+        <div class="detail-content">
+          <span class="detail-label">Email Address</span>
+          <span class="detail-value">{{ customer.email }}</span>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-icon detail-icon--green">
+          <mat-icon>phone</mat-icon>
+        </div>
+        <div class="detail-content">
+          <span class="detail-label">Phone Number</span>
+          <span class="detail-value">{{ customer.phone }}</span>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-icon detail-icon--amber">
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+        <div class="detail-content">
+          <span class="detail-label">Date Added</span>
+          <span class="detail-value">{{ customer.date | date: 'fullDate' }}</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="profile-footer">
+      <a [routerLink]="['/edit', customer._id]" class="btn-edit" id="btn-edit-customer">
+        <mat-icon>edit</mat-icon>
+        Edit Customer
+      </a>
+    </div>
+
+  </div>
+
+</div>
